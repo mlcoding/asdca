@@ -1,2 +1,2 @@
 # asdca
-generic accelerated sdca
+# generic accelerated sdca
