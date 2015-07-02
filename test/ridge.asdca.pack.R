@@ -31,3 +31,6 @@ w.hat = out$beta
 ite = out$ite
 intcpt.hat = out$intercept
 out$runt
+
+# data(eyedata)
+# out2=stocml(X=x,Y=y)
