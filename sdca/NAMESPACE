@@ -1,0 +1,10 @@
+useDynLib("stocml")
+import("MASS","Matrix")
+export("stocml",
+       "print.ridge",
+       "plot.ridge",
+       "coef.ridge",
+       "predict.ridge"
+      )
+S3method("print", "ridge")
+S3method("plot", "ridge")

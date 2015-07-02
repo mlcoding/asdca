@@ -1,0 +1,11 @@
+Package: stocml
+Type: Package
+Title: Stochastic Machine Learning
+Version: 0.1.0
+Date: 2015-6-29
+Author: Xingguo Li, Tuo Zhao and Daniel Vainsencher
+Maintainer: Xingguo Li <xingguo.leo@gmail.com>
+Depends: R (>= 2.15.0), MASS, Matrix
+Description: 
+License: GPL-2
+Repository: CRAN
