@@ -25,12 +25,15 @@ w0 = matrix(rnorm(d, mean = 0, sd = 1)*2,nrow=d,ncol=1)
 Y = X%*%w0 + 1*rnorm(n)/1e1
 nlambda = 10
 lambda.max = max(abs(crossprod(X,Y)))/n*1.0001
-lambda = exp(seq(log(lambda.max), log(lambda.max*0.05), length = nlambda))
+lambda = exp(seq(log(lambda.max), log(lambda.max*0.01), length = nlambda))
 out = stocml(X,Y,lambda,alg = "sdca",design.sd=TRUE,prec = prec1,max.ite = max.ite1)
 w.hat = out$beta
 ite = out$ite
 intcpt.hat = out$intercept
 out$runt
+
+out.glm = glmnet(X,Y,family="gaussian",lambda=lambda,alpha=0)
+w.hat.glm = as.matrix(out.glm$beta)
 
 # data(eyedata)
 # out2=stocml(X=x,Y=y)
