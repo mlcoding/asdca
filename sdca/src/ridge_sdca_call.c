@@ -111,7 +111,7 @@ SEXP ridge_sdca_call(SEXP Y_, SEXP X_, SEXP X_maxrn_, SEXP n_, SEXP d_, SEXP lam
 		for(j=0;j<d;j++){
 			beta[i*d+j] = beta2[j];
         }
-        printf("i=%d,ite1=%d,ite2=%d,b1=%f,b2=%f,b3=%f,b4=%f,b5=%f \n",i,ite1,ite_in[i],beta[i*d+0],beta[i*d+1],beta[i*d+2],beta[i*d+3],beta[i*d+4]);
+        //printf("i=%d,ite1=%d,ite2=%d,b1=%f,b2=%f,b3=%f,b4=%f,b5=%f \n",i,ite1,ite_in[i],beta[i*d+0],beta[i*d+1],beta[i*d+2],beta[i*d+3],beta[i*d+4]);
         stop = clock();
         runt[i] = (double)(stop - start)/CLOCKS_PER_SEC;
     }
