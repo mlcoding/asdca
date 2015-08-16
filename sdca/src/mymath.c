@@ -169,6 +169,18 @@ void vec_mat_prod_coef(double *x, double *y, double *z, double coef, int n, int 
     }
 }
 
+// x = z*y, z is m by n, y is n by 1, x is m by 1
+void mat_vec_prod(double *x, double *z, double *y, int m, int n){
+    int i,j;
+    
+    for(i=0; i<m; i++){
+        x[i] = 0;
+        for(j=0; j<n; j++){
+            x[i] += z[j*m+i]*y[j];
+        }
+    }
+}
+
 
 // x = dif*z^T y, y is n by m, z is n by d, x is m by d
 void vec_mat_prod_mvr(double *x, double *y, double *z, int m, int n, int d, double dif){
@@ -311,7 +323,7 @@ double dif_2norm(double *x, double *y, int *xa_idx, int n){
     return sqrt(norm2);
 }
 
-// ||x-y||_2
+// ||x-y||_2^2
 double dif_2norm_dense(double *x, double *y, int n){
     int i;
     double tmp, norm2;
@@ -321,7 +333,7 @@ double dif_2norm_dense(double *x, double *y, int n){
         tmp = x[i]-y[i];
         norm2 += tmp*tmp;
     }
-    return sqrt(norm2);
+    return norm2;
 }
 
 // ||x-y||_F
@@ -1895,4 +1907,59 @@ double l1norm_act(double *beta, int *set_act, int size_a){
         tmp += fabs(beta[set_act[i]]);
     }
     return tmp;
+}
+
+// smooth hinge loss x = sm_hinge(x)
+void smooth_svm(double * x, int n, double gamma){
+	int i;
+	
+	for (i=0; i<n; i++){
+		if(x[i]>=1) {
+			x[i] = 0;
+		}
+		else{
+			if(x[i]<=1-gamma){
+				x[i] = 1-x[i]-gamma/2;
+			}
+			else{
+				 x[i] = pow(1-x[i],2)/(2*gamma);
+			}
+		}
+	}
+}
+
+// primal dual gap for svm1
+double pd_gap_svm1(double * X, double * beta, double * Xb, double * alp, double gamma, double lambda, int n, int d){
+	int i;
+	double tmp;
+	
+	mat_vec_prod(Xb, X, beta, n, d); // Xb = X*beta
+	smooth_svm(Xb, n, gamma);
+	tmp = 0;
+	for(i=0;i<n;i++){
+		tmp+= Xb[i]-alp[i]+alp[i]*alp[i]*gamma/2;
+	}
+	tmp= tmp/(double)n+lambda*vec_2normsq(beta, d);
+	return tmp;
+}
+
+// primal dual gap for svm2
+double pd_gap_svm2(double * X, double * beta, double * Xb, double * alp, double * z, double gamma, double lambda, int n, int d){
+	int i;
+	double tmp1, tmp2;
+	
+	mat_vec_prod(Xb, X, beta, n, d); // Xb = X*beta
+	//printf("X %f,%f,%f,%f,%f \n",X[0],X[1],X[2],X[3],X[4]);
+	//printf("Xb %f,%f,%f,%f,%f \n",Xb[0],Xb[1],Xb[2],Xb[3],Xb[4]);
+	smooth_svm(Xb, n, gamma);
+	//printf("smo %f,%f,%f,%f,%f \n",Xb[0],Xb[1],Xb[2],Xb[3],Xb[4]);
+	tmp1 = 0;
+	for(i=0;i<n;i++){
+		tmp1+= Xb[i]-alp[i]+alp[i]*alp[i]*gamma/2;
+	}
+	tmp2 = 0;
+	for(i=0;i<d;i++){
+		tmp2+= beta[i]*(beta[i]-z[i]);
+	}
+	return tmp1/(double)n+lambda*tmp2;
 }

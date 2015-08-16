@@ -16,9 +16,8 @@ ridge.sdca.call <- function(Y, X, lambda, nlambda, n, d, max.ite, prec,verbose)
   idx = sample(c(1:n), n*10, replace = TRUE)
   idx = idx-1
   str=.Call("ridge_sdca_call", as.double(Y), as.double(X), as.double(X_maxrn), 
-         as.integer(n), as.integer(d), 
-         as.double(lambda), as.integer(nlambda), 
-         as.integer(max.ite), as.double(prec), as.integer(idx))
+         as.integer(n), as.integer(d), as.double(lambda), as.integer(nlambda), 
+         as.integer(max.ite), as.double(prec), as.integer(idx), PACKAGE="stocml")
   beta.list = vector("list", nlambda)
   for(i in 1:nlambda){
     beta.i = unlist(str[1])[((i-1)*d+1):(i*d)]

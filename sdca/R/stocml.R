@@ -12,19 +12,22 @@ stocml <- function(X,
                    lambda = NULL,
                    nlambda = NULL,
                    lambda.min.ratio = NULL,
-                   family = "gaussian",
+                   method = "ridge",
                    alg = "sdca",
-                   standardize = FALSE,
                    design.sd = TRUE,
                    res.sd = FALSE,
                    prec = 1e-4,
                    max.ite = 1e4,
                    verbose = TRUE)
 {
-  if(family=="gaussian"){
+  if(method=="ridge"){
     out = stocml.ridge(X = X, Y = Y, lambda = lambda, nlambda = nlambda, lambda.min.ratio = lambda.min.ratio,
                        alg = alg, design.sd = design.sd, res.sd = res.sd, prec = prec, max.ite = max.ite, verbose = verbose)
   }
-  out$family = family
+  if(method=="svm"){
+    out = stocml.svm(xx = X, yy = Y, lambda = lambda, nlambda = nlambda, lambda.min.ratio = lambda.min.ratio,
+                       alg = alg, prec = prec, max.ite = max.ite, verbose = verbose)
+  }
+  out$method = method
   return(out)
 }

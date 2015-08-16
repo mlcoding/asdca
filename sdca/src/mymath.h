@@ -42,11 +42,14 @@ void shuffle(int *array, int n);
 // x^T y
 double vec_inprod(double *x, double *y, int n);
 
-// x = y z, y is 1 by m, z is m by n, x is 1 by n
+// x = y * z, z is m by n, y is n by 1, x is m by 1
 void vec_mat_prod(double *x, double *y, double *z, int m, int n);
 
 // x = y * z * coef, y is 1 by m, z is m by n, x is 1 by n
 void vec_mat_prod_coef(double *x, double *y, double *z, double coef, int m, int n);
+
+// x = z*y, y is 1 by m, z is m by n, x is 1 by n
+void mat_vec_prod(double *x, double *z, double *y, int m, int n);
 
 // x = y^T z, y is m by n, z is n by d, x is m by d
 void vec_mat_prod_mvr(double *x, double *y, double *z, int m, int n, int d, double dif);
@@ -73,7 +76,7 @@ int is_match(int idx, int * vec, int n);
 
 double dif_2norm(double *x, double *y, int *xa_idx, int n);
 
-// ||x-y||_2
+// ||x-y||_2^2
 double dif_2norm_dense(double *x, double *y, int n);
 
 // ||x-y||_F
@@ -336,6 +339,14 @@ double l1norm_act(double *beta, int *set_act, int size_a);
 
 void proj_mat_sparse(double *u, int *idx, int *size_u, double *lambda, int *nn, int *mm);
 
+// smooth hinge loss x = sm_hinge(x)
+void smooth_svm(double * x, int n, double gamma);
+
+// primal dual gap for svm1
+double pd_gap_svm1(double * X, double * beta, double * Xb, double * alp, double gamma, double lambda, int n, int d);
+
+// primal dual gap for svm2
+double pd_gap_svm2(double * X, double * beta, double * Xb, double * alp, double * z, double gamma, double lambda, int n, int d);
 
 void dantzig_mfista_scr(double *b0, double *A0, double *b, double *A, int *idx_scr, int num_scr, int dim, double *beta, double mu, double *L, int *ite, int *ite2, int *ite3, double lambda, int max_ite, double prec, int intercept, int flag, int nlamb);
 

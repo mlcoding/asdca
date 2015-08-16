@@ -4,7 +4,17 @@ export("stocml",
        "print.ridge",
        "plot.ridge",
        "coef.ridge",
-       "predict.ridge"
+       "predict.ridge",
+       "print.svm",
+       "plot.svm",
+       "coef.svm",
+       "predict.svm"
       )
 S3method("print", "ridge")
 S3method("plot", "ridge")
+S3method("coef", "ridge")
+S3method("predict", "ridge")
+S3method("print", "svm")
+S3method("plot", "svm")
+S3method("coef", "svm")
+S3method("predict", "svm")
